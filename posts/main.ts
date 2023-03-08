@@ -1,4 +1,5 @@
 import { encode as he, decode as hd } from 'https://deno.land/std/encoding/hex.ts'
+import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import { Application, Router, RouterContext } from 'https://deno.land/x/oak/mod.ts'
 
 // curl -POST -H "Content-Type: application/json" -d '{"title":"wrld"}'
@@ -45,6 +46,10 @@ router.post('/posts', createPost)
 //   ctx.response.body = 'Hello world!'
 // })
 
+app.use(oakCors({
+  origin: /^.+localhost:(3000)$/,
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+}))
 app.use(router.allowedMethods())
 app.use(router.routes())
 
