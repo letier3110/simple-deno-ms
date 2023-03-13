@@ -1,14 +1,10 @@
 import axios from 'axios'
 import { FC, useState, useEffect, useCallback } from 'react'
+import { COMMENTS_URL } from './constants'
 
 interface IComment {
   id: string
   content: string
-}
-
-interface PostEntity {
-  id: string
-  comments: IComment[]
 }
 
 
@@ -22,7 +18,7 @@ const CommentList: FC<CommentListProps> = ({
   const [comments, setComments] = useState<IComment[]>([])
 
   const fetchPosts = useCallback(async () => {
-    const res = await axios.get(`http://localhost:4001/posts/${postId}/comments`)
+    const res = await axios.get(`${COMMENTS_URL}/posts/${postId}/comments`)
     setComments(res.data)
   }, [postId])
 

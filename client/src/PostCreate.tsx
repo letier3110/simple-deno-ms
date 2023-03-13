@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { ChangeEvent, FC, useState } from 'react'
+import { POSTS_URL } from './constants'
 
 const PostCreate: FC = () => {
   const [title, setTitle] = useState<string>('')
@@ -12,7 +13,7 @@ const PostCreate: FC = () => {
     e.preventDefault()
     if(title === '') return
 
-    await axios.post('http://localhost:4000/posts', {
+    await axios.post(`${POSTS_URL}/posts`, {
       title
     })
 

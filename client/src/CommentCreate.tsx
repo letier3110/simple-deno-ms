@@ -1,13 +1,12 @@
 import axios from 'axios'
 import { ChangeEvent, FC, useState } from 'react'
+import { COMMENTS_URL } from './constants'
 
 interface CommentCreateProps {
   postId: string
 }
 
-const CommentCreate: FC<CommentCreateProps> = ({
-  postId
-}) => {
+const CommentCreate: FC<CommentCreateProps> = ({ postId }) => {
   const [content, setContent] = useState<string>('')
 
   const handleChangeContent = (e: ChangeEvent<HTMLInputElement>) => {
@@ -16,9 +15,9 @@ const CommentCreate: FC<CommentCreateProps> = ({
 
   const handleOnSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if(content === '') return
+    if (content === '') return
 
-    await axios.post(`http://localhost:4001/posts/${postId}/comments`, {
+    await axios.post(`${COMMENTS_URL}/posts/${postId}/comments`, {
       content
     })
 

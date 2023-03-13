@@ -1,6 +1,9 @@
 import { encode as he, decode as hd } from 'https://deno.land/std/encoding/hex.ts'
 import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import { Application, Router, RouterContext } from 'https://deno.land/x/oak/mod.ts'
+import { config } from "https://deno.land/x/dotenv/mod.ts";
+
+const { PORT } = config()
 
 // curl -POST -H "Content-Type: application/json" -d '{"content":"wrld"}' 'http://localhost:4001/posts/123/comments'
 //  curl -i -H "Accept: application/json" 'http://localhost:4001/posts/123/comments'
@@ -62,4 +65,4 @@ app.use(oakCors({
 app.use(router.allowedMethods())
 app.use(router.routes())
 
-await app.listen({ port: 4001 })
+await app.listen({ port: PORT })
