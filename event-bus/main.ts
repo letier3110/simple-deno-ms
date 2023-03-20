@@ -15,6 +15,24 @@ const {
 //  curl -i -H "Accept: application/json" 'http://localhost:4001/posts/123/comments'
 const app = new Application()
 
+const allServices = [
+  {
+    name: 'posts',
+    host: POSTS_SERVICE_HOST,
+    port: POSTS_SERVICE_PORT
+  },
+  {
+    name: 'comments',
+    host: COMMENTS_SERVICE_HOST,
+    port: COMMENTS_SERVICE_PORT
+  },
+  {
+    name: 'aggregation',
+    host: AGGREGATION_SERVICE_HOST,
+    port: AGGREGATION_SERVICE_PORT
+  }
+]
+
 // add get route for GET all posts
 
 const router = new Router()
@@ -25,29 +43,15 @@ const sendEvent = async (ctx: RouterContext<'/posts'>) => {
   }
   const event = await await ctx.request.body({ type: 'json' }).value
 
-  fetch(`http://${POSTS_SERVICE_HOST}:${POSTS_SERVICE_PORT}/events`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(event)
+  allServices.forEach(service => {
+    fetch(`http://${service.host}:${service.port}/events`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(event)
+    })
   })
-
-  fetch(`http://${COMMENTS_SERVICE_HOST}:${COMMENTS_SERVICE_PORT}/events`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(event)
-  })
-
-  fetch(`http://${AGGREGATION_SERVICE_HOST}:${AGGREGATION_SERVICE_PORT}/events`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(event)
-  });
 
   ctx.response.status = 201
   // ctx.response.body = event
